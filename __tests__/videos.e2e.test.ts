@@ -5,6 +5,7 @@ import { SETTINGS } from '../src/settings';
 
 import { app } from '../src/app';
 import supertest from 'supertest';
+import { db } from '../src/db/db';
 
 const req = supertest(app);
 
@@ -24,8 +25,11 @@ describe('/videos', () => {
   // });
 
   it('Get videos = []', async () => {
-    const res = await req.get('/videos').expect(200);
+    const x = 'super video';
+    db.videos = [{ title: 'x' }];
+    const res = await req.get(`/videos/1?search=${x}`).send({ title: 1234 }).expect(200);
     console.log(res.body);
+    expect(res.body.length).toBe(1);
   });
   // it('should get not empty array', async () => {
   //   // setDB(dataset1)
