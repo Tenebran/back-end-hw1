@@ -24,6 +24,16 @@ describe('/videos', () => {
   //   // expect(res.body.length).toBe(0)
   // });
 
+  it('get all videos', async () => {
+    const x = [
+      { title: 'super video', id: 'id' },
+      { title: 'super video', id: 'id2' },
+    ];
+    db.videos = x;
+    const res = await req.get(`/videos`).expect(200);
+    console.log(res.body, 'Body all videos');
+  });
+
   it('Get videos = []', async () => {
     const x = 'super video';
     db.videos = [{ title: 'x' }];
