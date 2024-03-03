@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { db } from './db/db';
+import { db, setDB } from './db/db';
 import { createVideoController } from './controller/createVideoController';
 
 type ParamsType = { id: string };
@@ -14,35 +14,43 @@ export const getVideo = (
   req: Request<ParamsType, any, ReqBodyType, QueryType>,
   res: Response<ResponseBodyType>
 ) => {
-  console.log(req.params.id);
-  console.log(req.body.title);
-  console.log(req.query.search);
-  res.status(200).json(db.videos);
+  res.status(200).json(db.videos.find(v => v.id === +req.params.id));
 };
 
 export const getVideos = (
   req: Request<ParamsType, any, ReqBodyType, QueryType>,
   res: Response<ResponseBodyType>
 ) => {
-  console.log(new Date().toISOString());
-  // console.log(req.params.id);
-  // console.log(req.body.title);
-  // console.log(req.query.search);
   res.status(200).json(db.videos);
 };
 
-export const postVideos = (
+export const updateVideoController = (
   req: Request<ParamsType, any, ReqBodyType, QueryType>,
   res: Response<ResponseBodyType>
-) => {};
+) => {
+  res.status(200).json(db.videos.find(v => v.id === +req.params.id));
+};
 
-export const postVideo = (
+export const deleteVideoController = (
   req: Request<ParamsType, any, ReqBodyType, QueryType>,
   res: Response<ResponseBodyType>
-) => {};
+) => {
+  const video = db.videos.find(v => v.id === +req.params.id);
+
+  if (!video) {
+    res.status(404);
+    return;
+  }
+  db.videos = db.videos.filter(v => v.id === +req.params.id);
+
+  res.status(204).json();
+};
 
 app.get('/videos', getVideos);
 app.get('/videos/:id', getVideo);
 app.post('/videos', createVideoController);
+app.put('/videos/:id', createVideoController);
+app.delete('/videos/:id', deleteVideoController);
+// app.delete('/:id', updateVideoController);
 // app.get(SETTINGS.PATH.VIDEOS, getVideosController)
 // app.use(SETTINGS.PATH.VIDEOS, videosRouter)

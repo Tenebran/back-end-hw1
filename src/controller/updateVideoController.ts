@@ -27,15 +27,13 @@ export type VideoResolutionsType =
   | 'P1440'
   | 'P2160';
 
-export type VideoDBType = {
-  id: number;
+export type UpdateVideoDBType = {
   title: string;
   author: string;
-  canBeDownloaded: boolean;
-  minAgeRestriction: null;
-  createdAt: string;
-  publicationDate: string;
   availableResolutions: Array<VideoResolutionsType>;
+  canBeDownloaded: true;
+  minAgeRestriction: 18;
+  publicationDate: string;
 };
 
 export type InputVideoType = {
@@ -72,29 +70,28 @@ const inputValidation = (video: InputVideoType) => {
   return errors;
 };
 
-export const createVideoController = (
-  req: Request<any, any, InputVideoType>,
-  res: Response<OutputVideoType | OutputErrorsType>
-) => {
-  const errors = inputValidation(req.body);
-  if (errors.errorsMessages.length) {
-    res.status(400).json(errors);
-    return;
-  }
+// export const updateVideoController = (
+//   req: Request<any, any, InputVideoType>,
+//   res: Response<OutputVideoType | OutputErrorsType>
+// ) => {
+//   const errors = inputValidation(req.body);
+//   if (errors.errorsMessages.length) {
+//     res.status(400).json(errors);
+//     return;
+//   }
 
-  const newVideo: VideoDBType = {
-    ...req.body,
-    id: Date.now() + Math.random(),
-    title: req.body.title,
-    author: req.body.author,
-    canBeDownloaded: true,
-    minAgeRestriction: null,
-    createdAt: new Date().toISOString(),
-    publicationDate: new Date().toISOString(),
-    availableResolutions: [...req.body.availableResolutions],
-  };
+//   const newVideo: UpdateVideoDBType = {
+//     ...req.body,
+//     id: Date.now() + Math.random(),
+//     title: req.body.title,
+//     author: req.body.author,
+//     canBeDownloaded: true,
+//     createdAt: new Date().toISOString(),
+//     publicationDate: new Date().toISOString(),
+//     availableResolutions: [...req.body.availableResolutions],
+//   };
 
-  db.videos = [...db.videos, newVideo];
+//   db.videos = [...db.videos, newVideo];
 
-  res.status(201).json(newVideo);
-};
+//   res.status(201).json(newVideo);
+// };
