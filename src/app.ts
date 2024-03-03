@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import { db } from './db/db';
+import { createVideoController } from './controller/createVideoController';
 
 type ParamsType = { id: string };
 type ResponseBodyType = any[];
@@ -42,5 +43,6 @@ export const postVideo = (
 
 app.get('/videos', getVideos);
 app.get('/videos/:id', getVideo);
+app.post('/videos', createVideoController);
 // app.get(SETTINGS.PATH.VIDEOS, getVideosController)
 // app.use(SETTINGS.PATH.VIDEOS, videosRouter)
